@@ -27,7 +27,7 @@ const Card = ({ title, status_color, status, des, trashTask, id, update, stateUp
 
   return (
     <div className="card">
-      <button onClick={() => setShow(true)}>Edit the Task</button>
+      <button onClick={() => setShow(true)} style={{ width: "fit-content" , boxShadow: "1px 1px 4px rgba(0,0,0.1)"}}>Edit the Task</button>
       <Modal
         onAddTasks={() => {
           updateTask();
