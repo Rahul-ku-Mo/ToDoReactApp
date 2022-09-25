@@ -1,5 +1,5 @@
 # This project is hosted on netlify . 
-  Link: https://632f78f2b1a933678d3b3575--jolly-speculoos-a7a957.netlify.app/
+  Link: https://jolly-speculoos-a7a957.netlify.app/
 
 # Getting Started with Create React App
 
