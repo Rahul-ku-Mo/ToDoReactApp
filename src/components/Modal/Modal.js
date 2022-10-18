@@ -1,7 +1,12 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { CSSTransition } from "react-transition-group";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { faBookBible, faXmark } from "@fortawesome/free-solid-svg-icons";
+import NavbarButton from "../shared/Button/Button";
 import "./modal.css";
+
 
 const Modal = (props) => {
   const closeOnEscapeKeyDown = (e) => {
@@ -11,6 +16,7 @@ const Modal = (props) => {
   };
 
   useEffect(() => {
+    
     document.body.addEventListener("keydown", closeOnEscapeKeyDown);
     return function cleanup() {
       document.body.removeEventListener("keydown", closeOnEscapeKeyDown);
@@ -25,14 +31,20 @@ const Modal = (props) => {
     >
       <div className="modal" onClick={props.onClose}>
         <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-          <div className="modal-header">
-            <h4 className="modal-title">{props.title}</h4>
+          <div className="modal-header" style={{ backgroundColor: `${props.color}`}}>
+            <div
+              className="modal-close-btn rounded-full"
+              onClick={props.onClose}
+            >
+              <FontAwesomeIcon icon={faXmark} />
+            </div>
+            <div className="absolute top-[118px] right-[12px]">
+              <NavbarButton icon={faBookBible} btnInput={"Cover"} />
+            </div>
           </div>
+          <div className="modal-bg-content">{props.title}</div>
           <div className="modal-body">{props.children}</div>
-          <div className="modal-footer">
-            <button onClick={props.onClose} className="button">
-              Close
-            </button>
+          {/* <div className="modal-footer">
             <button
               onClick={() => {
                 props.onAddTasks();
@@ -42,7 +54,7 @@ const Modal = (props) => {
             >
               {props.taskaction}
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     </CSSTransition>,

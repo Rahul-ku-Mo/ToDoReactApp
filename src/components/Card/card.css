@@ -1,15 +1,14 @@
 .card {
   background: #fff;
-  width: 18vw;
-  padding: 10px;
-  margin: 5px auto;
+  margin: 0px 6px 4px 6px;
   display: flex;
   flex-direction: column;
-  border-radius: 2px;
+  border-radius: 4px;
   justify-content: space-between;
   border: 1px solid rgb(176, 176, 176);
   transition: all 200ms ease-in-out;
   animation: 500ms ease-out 0s 1 slideInFromLeft;
+  
 }
 @keyframes slideInFromLeft {
   0% {
@@ -23,7 +22,6 @@
   box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);
 }
 .card-description {
-  font-size: 12px;
   overflow-y: scroll;
   height: 50px;
 }
@@ -53,24 +51,46 @@
   transition: all 350ms ease-in-out;
 }
 
-input,
 textarea {
-  padding: 10px;
-  background: rgb(218, 218, 218);
+  background-color: var(--ds-background-neutral);
   border: none;
-  width: 100%;
-  border-radius: 10px;
-  margin: 10px 0px;
-  transition: all 0.5s ease-in-out;
-}
-input:focus {
-  outline: none;
-  transform: scale(1.02);
-}
-textarea {
-  overflow: hidden;
+  border-radius: 3px;
+  box-shadow: none;
+  color: var(--ds-text, inherit);
+  display: block;
+  width: 80%;
+  padding: 8px 12px;
+  text-decoration: none;
+  resize: none;
+  cursor: pointer;
 }
 
+input {
+  padding: 8px 12px;
+  border: none;
+  height: 40px !important;
+  width: 80%;
+  background-color: #fff;
+  transition: all 350ms ease-in-out;
+}
+
+textarea:hover {
+  background-color: var(--ds-background-neutral-hovered);
+  border: none;
+  box-shadow: none;
+}
+textarea:focus {
+  min-height: 100px;
+  background-color: white;
+  border: 2px solid var(--dynamic-text-color);
+  outline: none;
+}
+
+input:focus {
+  box-shadow: 0 6px 12px 5px #091e4240;
+  border: none;
+  outline: none;
+}
 .card-actions {
   display: flex;
   align-items: center;
@@ -80,4 +100,33 @@ textarea {
 
 .status-bar {
   gap: 20px;
+}
+
+.modal-sidebar {
+  float: right;
+
+  padding: 0 16px 8px 8px;
+  width: calc(100% - 560px);
+  z-index: 10;
+}
+
+.card--custom-bg {
+  height: 107.8px;
+  background-size: cover;
+}
+
+.custom--padding {
+  overflow: hidden;
+  padding: 6px 8px 2px;
+  position: relative;
+  z-index: 0;
+}
+
+.card-name {
+  color: #fff;
+  position: absolute;
+  font-weight: 700;
+  font-size: 20px;
+  translate: 40px 40px;
+
 }

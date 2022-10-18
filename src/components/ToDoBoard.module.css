@@ -1,43 +1,55 @@
 .board {
-  background:rgba(113, 113, 113, 0.2);
+  background: rgba(113, 113, 113, 0.2);
   background-repeat: no-repeat;
   padding: 20px;
   margin: 20px;
   height: 90vh;
   display: flex;
+  align-items: baseline;
 }
 
 .board_sec {
-  border: 5px solid rgb(176, 176, 176);
   display: flex;
-  width: 20vw;
-  padding: 20px;
+  width: 272px;
+
+  padding: 6px 12px;
   box-shadow: 0 0 20px rgba(221, 216, 216, 0.2);
   justify-content: space-between;
-  border-radius:12px;
-  position: sticky;
+  border-radius: 12px;
+  align-items: center;
 }
 
-.t {
-  background: linear-gradient(25deg, #241533, #7600bf);
-  color: white;
-}
-.c {
-  background: linear-gradient(254deg, #68bc07, #00bf08);
-  color: white;
-}
-.r {
-  background: linear-gradient(254deg, #0786bc, #00bfbf);
-  color: white;
-}
-.p {
-  background: linear-gradient(254deg, #bc5b07, #bf7300);
-  color: white;
-}
 .boardGap {
-  margin: 0 auto;
   border: 2px solid #fff;
-  border-radius: 12px;
-  overflow-y: scroll;
-  background-color: #fff;
+  border-radius: 2px;
+
+  background-color: #ebecf0;
 }
+.listInput {
+  width: 272px !important;
+  transition: none !important;
+}
+.listInput:focus {
+  border: 2px solid var(--dynamic-text-color) !important;
+  box-shadow: none !important;
+}
+
+.actionBtn {
+  background-color: var(--dynamic-text-color);
+  color: white !important;
+  padding: 6px 12px;
+  line-height: 20px;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  border-radius: 3px;
+  margin: 4px 0px;
+  cursor: pointer;
+}
+
+.actionBtn:hover {
+  background-color: #0267a2;
+}
+

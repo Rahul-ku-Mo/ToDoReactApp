@@ -1,8 +1,11 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState } from "react";
 import Card from "./Card/Card";
 import Modal from "./Modal/Modal";
-
+import User from "./shared/user";
+import CardView from "./CardActions/cardView";
+import AddCardView from "./CardActions/addCardView";
 import { db } from "../Firebase";
 import {
   addDoc,
@@ -13,221 +16,179 @@ import {
 } from "firebase/firestore";
 
 import styles from "./ToDoBoard.module.css";
-import AddCard from "./shared/add.webp";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import {
+  faBars,
+  faPlus,
+  faX,
+  faXmark,
+  faXmarkCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
+import ListView from "./ListView";
 
 const ToDoBoard = () => {
-  let dataCard = [];
-  
-  const [show, setShow] = useState(false);
+  let listArray = [];
+  const randColor = () => {
+    return (
+      "#" +
+      Math.floor(Math.random() * 16777215)
+        .toString(16)
+        .padStart(6, "0")
+        .toUpperCase()
+    );
+  };
+
   const [add, setAdd] = useState(false);
   const [del, setDel] = useState(false);
   const [upd, setUpd] = useState(false);
 
+  const [showListInput, setShowListInput] = useState("none");
+  const [hideListInput, setHideListInput] = useState("inline-block");
+
+  const [list, setList] = useState("");
   const [title, setTitle] = useState("");
   const [des, setDes] = useState("");
-  const [color, setColor] = useState("#000000");
-  const [status, setStatus] = useState("");
-  const [TaskList, setTaskList] = useState([]);
+  const [color, setColor] = useState(randColor());
 
-  const [progressList, setProgressList] = useState([]);
-  const [completeList, setCompleteList] = useState([]);
-  const [reviewList, setReviewList] = useState([]);
+  const [lists, setLists] = useState([]);
 
-  //1.add to the database and
-  const addTask = async () => {
+  //1.add SwimLanes to the database and
+  const addLists = async () => {
     try {
-      const docRef = await addDoc(collection(db, "Tasks"), {
-        title: title,
-        des: des,
-        color: color,
-        status: status,
+      const listDocRef = await addDoc(collection(db, "Lists"), {
+        listName: list,
       });
-      console.log(docRef);
+      console.log(listDocRef);
       setAdd(!add);
     } catch (err) {
       console.log(err);
     }
   };
 
+  const addTask = async (lid) => {
+    try {
+      const taskDocRef = await addDoc(collection(db, "Lists", lid, "Tasks"), {
+        taskName: title,
+        taskDes: des,
+        taskColor: color,
+      });
+      console.log(taskDocRef);
+      setAdd(!add);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   //2.get Database
-  const getTask = async () => {
-    const querySnapshot = await getDocs(collection(db, "Tasks"));
+  const getTask = async (lid, taskArray = [], setTaskList) => {
+    const querySnapshot = await getDocs(collection(db, "Lists", lid, "Tasks"));
+
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      dataCard.push({ ...doc.data(), taskId: doc.id });
+
+      taskArray.push({ ...doc.data(), taskId: doc.id });
     });
 
-    setTaskList(dataCard.filter((task) => task.status === ""));
-
-    setProgressList(dataCard.filter((list) => list.status === "Progress"));
-    setReviewList(dataCard.filter((list) => list.status === "Review"));
-    setCompleteList(dataCard.filter((list) => list.status === "Completed"));
+    setTaskList(taskArray);
   };
 
-  const deleteTask = async (id) => {
+  const getLists = async () => {
+    const querySnapshot = await getDocs(collection(db, "Lists"));
+
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      listArray.push({ ...doc.data(), listId: doc.id });
+    });
+
+    setLists(listArray);
+  };
+
+  const deleteList = async (lid) => {
     try {
-      const trash = await deleteDoc(doc(db, "Tasks", id));
+      const trash = await deleteDoc(doc(db, "Lists", lid));
       setDel(!del);
       console.log(trash);
     } catch (err) {
       console.error(err);
     }
   };
-
   useEffect(() => {
-    getTask();
-  }, [add, del, upd]);
+    getLists();
+  }, [add, upd, del]);
+
   return (
     <div className={styles.board}>
-      <Modal
-        title="Add to My Day"
-        onClose={() => setShow(false)}
-        onAddTasks={() => addTask()}
-        show={show}
-        taskaction={"Add Task"}
+      {lists.map((eachList) => {
+        return (
+          <div className={styles.boardGap}>
+            <div className={`${styles.board_sec} ${styles.p}`}>
+              {eachList.listName}{" "}
+              <FontAwesomeIcon
+                className="cursor-pointer"
+                icon={faXmarkCircle}
+                onClick={() => {
+                  deleteList(eachList.listId);
+                }}
+              />
+            </div>
+            <ListView
+              getTask={getTask}
+              add={add}
+              del={del}
+              setDel={setDel}
+              upd={upd}
+              lid={eachList.listId}
+              setUpd={setUpd}
+              addTask={addTask}
+              setAdd={setAdd}
+              setTitle={setTitle}
+            />
+          </div>
+        );
+      })}
+
+      <div
+        onClick={() => {
+          setShowListInput("inline");
+          setHideListInput("none");
+        }}
+        style={{ display: `${hideListInput}` }}
+        className="ml-4 text-sm rounded-sm w-[272px] leading-8 px-3 bg-zinc-300 h-fit cursor-pointer hover:bg-slate-400 transition all 250ms ease-in-out"
+      >
+        <FontAwesomeIcon icon={faPlus} className="pr-2" />
+        Add another List
+      </div>
+      <div
+        className="ml-4 text-sm rounded-sm bg-slate-100 px-1 pt-1"
+        style={{ display: `${showListInput}` }}
       >
         <input
+          className={styles.listInput}
           type="text"
-          placeholder="Title"
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => setList(e.target.value)}
         />
-        <textarea
-          type="text"
-          placeholder="Desciption"
-          onChange={(e) => setDes(e.target.value)}
-        />
-        <div className="card-interaction">
+        <div className="flex items-center gap-x-4">
           <div
-            className="status-bar"
-            style={{
-              position: "relative",
-              display: "flex",
-              gap: "20px",
+            onClick={() => {
+              addLists();
+              setAdd(!add);
+              setHideListInput("inline-block");
+              setShowListInput("none");
             }}
+            className={styles.actionBtn}
           >
-            <div
-              style={{ backgroundColor: "#df7c47" }}
-              className="status"
-              onClick={(e) => {
-                setStatus(e.target.innerHTML);
-                setColor(e.target.style.backgroundColor);
-              }}
-            >
-              Progress
-            </div>
-            <div
-              style={{ backgroundColor: "#2196f3" }}
-              className="status"
-              onClick={(e) => {
-                setStatus(e.target.innerHTML);
-                setColor(e.target.style.backgroundColor);
-              }}
-            >
-              Review
-            </div>
-            <div
-              style={{ backgroundColor: "#47df47" }}
-              className="status"
-              onClick={(e) => {
-                setStatus(e.target.innerHTML);
-                setColor(e.target.style.backgroundColor);
-              }}
-            >
-              Completed
-            </div>
+            Add List
           </div>
-        </div>
-      </Modal>
-      <div className={styles.boardGap}>
-        <div className={`${styles.board_sec} ${styles.t}`}>
-          To Do{" "}
-          <img
-            onClick={() => setShow(true)}
-            style={{
-              width: "35px",
-              cursor: "pointer",
+          <FontAwesomeIcon
+            className="cursor-pointer h-5"
+            onClick={() => {
+              setHideListInput("inline-block");
+              setShowListInput("none");
             }}
-            src={AddCard}
-            alt=""
+            icon={faXmark}
           />
-        </div>
-        <div>
-          {TaskList.map((card) => {
-            return (
-              <Card
-                key={card.taskId}
-                id={card.taskId}
-                title={card.title}
-                des={card.des}
-                status_color={card.color}
-                trashTask={deleteTask}
-                status={card.status}
-                update={setUpd}
-                stateUpdate={upd}
-              />
-            );
-          })}
-        </div>
-      </div>
-      <div className={styles.boardGap}>
-        <div className={`${styles.board_sec} ${styles.p}`}>In Progress </div>
-        <div>
-          {progressList.map((card) => {
-            return (
-              <Card
-                key={card.taskId}
-                id={card.taskId}
-                title={card.title}
-                des={card.des}
-                status_color={card.color}
-                trashTask={deleteTask}
-                status={card.status}
-                update={setUpd}
-                stateUpdate={upd}
-              />
-            );
-          })}
-        </div>
-      </div>
-      <div className={styles.boardGap}>
-        <div className={`${styles.board_sec} ${styles.r}`}>Review </div>
-        <div>
-          {reviewList.map((card) => {
-            return (
-              <Card
-                key={card.taskId}
-                id={card.taskId}
-                title={card.title}
-                des={card.des}
-                status_color={card.color}
-                trashTask={deleteTask}
-                status={card.status}
-                update={setUpd}
-                stateUpdate={upd}
-              />
-            );
-          })}
-        </div>
-      </div>
-      <div className={styles.boardGap}>
-        <div className={`${styles.board_sec} ${styles.c}`}>Completed </div>
-        <div>
-          {completeList.map((card) => {
-            return (
-              <Card
-                key={card.taskId}
-                id={card.taskId}
-                title={card.title}
-                des={card.des}
-                status_color={card.color}
-                trashTask={deleteTask}
-                status={card.status}
-                update={setUpd}
-                stateUpdate={upd}
-              />
-            );
-          })}
         </div>
       </div>
     </div>

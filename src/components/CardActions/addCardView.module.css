@@ -1,0 +1,24 @@
+.actionBtn {
+  background-color: var(--dynamic-text-color);
+  color: white !important;
+  padding: 6px 12px;
+  line-height: 20px;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  border-radius: 3px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  cursor: pointer;
+}
+
+.actionBtn:hover {
+  background-color: #0267a2;
+}
+
+.cardInput {
+  width: 272px !important;
+  transition: none !important;
+}

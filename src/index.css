@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 body {
   margin: 0;
@@ -6,6 +10,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  color: #172b4d;
 }
 
 * {
@@ -20,15 +27,27 @@ body {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+  background: #f1f1f1;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888; 
+  background: #888;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+  background: #555;
+}
+
+:root {
+  --navbar-button-background-color: rgba(0, 0, 0, 0.1);
+  --navbar-button-background-color-hovered: rgba(0, 0, 0, 0.2);
+  --navbar-button-background-color-pressed: #0000004d;
+  --ds-background-neutral-hovered: #091e4214;
+  --ds-background-neutral: #091e420a;
+  --dynamic-text-color: #0079bf;
+  --text-color:#172b4d;
+  --background-grey-color: #f4f5f7;
+  --ds-shadow-raised:#0000004d;
 }

@@ -1,0 +1,18 @@
+.navbar-btn {
+  margin-left: 4px;
+  font-weight: 400;
+  display: inline-block;
+  line-height: 32px;
+  border-radius: 5px;
+  padding: 0 12px;
+  background-color: var(--navbar-button-background-color);
+  transition: all 250ms ease-in-out;
+}
+  
+    
+.navbar-btn:hover {
+  background-color: var(--navbar-button-background-color-hovered);
+}
+.navbar-btn:focus {
+  background-color: var(--navbar-button-background-color-pressed);
+}
