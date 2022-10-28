@@ -1,6 +1,18 @@
 # This project is hosted on netlify . 
   Link: https://jolly-speculoos-a7a957.netlify.app/
 
+# Walkthrough
+
+1. Click on the "add another list" to add a list
+
+2. Click on the "add a card" to add a card.
+
+3. Now Click on the card to edit or add a Description.
+
+4. You can delete a single card or a list by clicking on "x" button in the bottom right corner or top right corner respectively.
+
+Thanks ................. for .................. visiting............
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
