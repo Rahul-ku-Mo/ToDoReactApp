@@ -8,7 +8,7 @@ const navbar = () => {
   return (
     <div className="flex items-center text-lg font-bold justify-between mt-2 bg-transparent">
       <div className="flex">
-        <div className="ml-2 px-2">Animo</div>
+        <div className="ml-2 px-2">TBoard</div>
         <div className="px-2 border-x-2">
           <NavbarButton icon={faLock} btnInput={"Private"} />
         </div>
